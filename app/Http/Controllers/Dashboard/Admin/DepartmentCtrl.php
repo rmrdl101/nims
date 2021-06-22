@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Dashboard\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Department;
-use App\Models\Page;
-use App\Models\Permission;
-use App\Models\Position;
+use App\Models\Dashboard\Admin\Department;
+use App\Models\Dashboard\Admin\Page;
+use App\Models\Dashboard\Admin\Permission;
+use App\Models\Dashboard\Admin\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;

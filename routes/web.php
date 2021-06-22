@@ -15,9 +15,12 @@ use App\Http\Controllers\Dashboard\Admin\RoleCtrl;
 use App\Http\Controllers\Dashboard\Admin\AdminCtrl;
 use App\Http\Controllers\Dashboard\DashCtrl;
 use App\Http\Controllers\Dashboard\ProfileCtrl;
+use App\Http\Controllers\DocumentManager\DocviewCtrl;
+use App\Http\Controllers\DocumentManager\FolderCtrl;
 use App\Http\Controllers\Dashboard\ScheduleCtrl;
 use App\Http\Controllers\Dashboard\KPICtrl;
 use App\Http\Controllers\Dashboard\BedOccupancyCtrl;
+use App\Http\Controllers\Dashboard\CommonForms\NSO\InspectionAcceptanceReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,26 +56,38 @@ Route::post('register', [RegisterCtrl::class, 'register']);
 
 
 //Admin Routes
-Route::middleware('position:admin,chief-nurse')->group(function (){
+Route::middleware('position:admin')->group(function (){
     Route::get('dashboard/admin', [AdminCtrl::class, 'index']);
     Route::resource('dashboard/admin/users', UserCtrl::class);
-    Route::resource('dashboard/admin/departments', DepartmentCtrl::class);
-    Route::resource('dashboard/admin/positions', PositionCtrl::class);
+    Route::resource('dashboard/admin/permissions', PermissionCtrl::class)->name('index', 'permission');
     Route::resource('dashboard/admin/pages', PageCtrl::class);
-    Route::resource('dashboard/admin/permissions', PermissionCtrl::class);
-    Route::resource('dashboard/admin/roles-and-permissions', RoleCtrl::class);
+    Route::resource('dashboard/admin/positions', PositionCtrl::class);
+    Route::resource('dashboard/admin/departments', DepartmentCtrl::class);
 });
 
+Route::get('dashboard/common-forms/nso/inspection-acceptance-report/iar-pdf', [InspectionAcceptanceReportController::class, 'pdf']);
 //Regular User Routes
 Route::middleware('position:admin,standard-user')->group(function (){
-    Route::get('dashboard', [DashCtrl::class, 'index']);
-    Route::resource('dashboard/profile', ProfileCtrl::class);
+    Route::get('dashboard', [DashCtrl::class, 'index'])->name('dashboard');
+    Route::resource('profile', ProfileCtrl::class)->name('index', 'profile');
+
+    Route::resource('document-manager', DocviewCtrl::class)->name('index', 'document-manager');
+    Route::post('/store/path/',[DocviewCtrl::class,'storepath']);
+
     Route::resource('dashboard/schedules', ScheduleCtrl::class);
     Route::resource('dashboard/key-performance-indicators', KPICtrl::class);
+    Route::resource('dashboard/common-forms/nso/inspection-acceptance-report', InspectionAcceptanceReportController::class);
+
     Route::resource('dashboard/bed-occupancy', BedOccupancyCtrl::class);
 });
 
 Route::get('bed-occupancy-overview', [BedOccupancyCtrl::class, 'overview']);
+
+Route::get('/file-tree',[DocviewCtrl::class,'fileTree'])->name('file-tree');
+Route::post('/fdelete',[DocviewCtrl::class,'fdelete'])->name('file-delete');
+Route::post('/upload',[DocviewCtrl::class,'upload'])->name('upload');
+Route::post('/new-folder',[DocviewCtrl::class,'newFolder'])->name('new-folder');
+Route::post('/delete-folder',[DocviewCtrl::class,'deleteFolder'])->name('delete-folder');
 
 //Route::namespace('App\Http\Controllers')->group(function (){
 //    Route::namespace('Auth')->group(function (){

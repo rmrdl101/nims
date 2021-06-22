@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Dashboard\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Department;
-use App\Models\Page;
-use App\Models\Permission;
-use App\Models\Position;
+use App\Models\Dashboard\Admin\Department;
+use App\Models\Dashboard\Admin\Page;
+use App\Models\Dashboard\Admin\Permission;
+use App\Models\Dashboard\Admin\Position;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -85,15 +85,23 @@ class UserCtrl extends Controller
                 $data = User::latest()->get();
                 return DataTables::of($data)
                     ->addIndexColumn()
-                    ->addColumn('page', function($row){
-//                        $pages = $row->pages;
-//
-//                        $page = "";
-//                        foreach($pages as $pag){
-//                            $page .= '<span class="badge badge-secondary">'.$pag->name.'</span>';
-//                        }
-//
-//                        return $page;
+                    ->addColumn('position', function($row){
+                        $position = "";
+
+                        foreach ($row->positions as $pos){
+                            $position .= '<span class="badge badge-secondary">'.$pos->slug.'</span>';
+                        }
+
+                        return $position;
+                    })
+                    ->addColumn('department', function($row){
+                        $department = "";
+
+                        foreach ($row->departments as $dep){
+                            $department .= '<span class="badge badge-secondary">'.$dep->name.'</span>';
+                        }
+
+                        return $department;
                     })
                     ->addColumn('action', function ($row) {
 
@@ -116,7 +124,7 @@ class UserCtrl extends Controller
                         }
                         if ($boundPerm->where('slug','=','update')->first())
                         {
-                            $action .= ' <a id="edit-data" data-toggle="modal" data-id=' . $row->id . '><i class="fa fa-edit"></i></a>';
+                            $action .= ' <a id="edit-data" href="users/' . $row->id . '/edit"><i class="fa fa-edit"></i></a>';
                         }
                         if ($boundPerm->where('slug','=','delete')->first())
                         {
@@ -131,7 +139,7 @@ class UserCtrl extends Controller
                         return $action;
 
                     })
-                    ->rawColumns(['page','action'])
+                    ->rawColumns(['position','department','action'])
                     ->make(true);
             }
         }
@@ -244,7 +252,7 @@ class UserCtrl extends Controller
      */
     public function edit(User $user)
     {
-        $department = Department::all();
+        $departments = Department::all();
         $position = Position::all();
 
         //A refer to HasDepartmentsAndPositions Trait
@@ -271,7 +279,7 @@ class UserCtrl extends Controller
 
             //query
             'user'=>$user,
-            'queryA' => $department,
+            'queryA' => $departments,
             'queryB' => $position,
             'userDepartment'=>$userDepartment,
             'userPosition'=>$userPosition,
@@ -292,19 +300,40 @@ class UserCtrl extends Controller
 
         //validate the fields
         $request->validate([
-            'username' => 'required|max:255',
+            'initials' => 'required|max:255',
             'email' => 'required|email|max:255',
-            'password' => 'confirmed',
         ]);
 
         $user->lname = $request->lname;
         $user->fname = $request->fname;
-        $user->username = $request->username;
+        $user->mname = $request->mname;
+        $user->initials = $request->initials;
         $user->email = $request->email;
+        $user->licnum = $request->licnum;
+        $user->designation = $request->designation;
+        $user->birthday = $request->birthday;
         if($request->password != null){
             $user->password = Hash::make($request->password);
         }
         $user->save();
+
+        if($request->departments == '0'){
+            $user->departments()->detach();
+            $user->save();
+        } else {
+            $user->departments()->detach();
+            $user->departments()->attach($request->departments);
+            $user->save();
+        }
+
+        if($request->positions == '0'){
+            $user->positions()->detach();
+            $user->save();
+        } else {
+            $user->positions()->detach();
+            $user->positions()->attach($request->positions);
+            $user->save();
+        }
 //
 //        $user->departments()->detach();
 //        $user->positions()->detach();
@@ -337,8 +366,8 @@ class UserCtrl extends Controller
      */
     public function destroy(User $user)
     {
-        $user->roles()->detach();
-        $user->permissions()->detach();
+        $user->positions()->detach();
+        $user->departments()->detach();
         $user->delete();
     }
 }

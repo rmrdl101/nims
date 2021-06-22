@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use App\Models\Department;
 use App\Models\Role;
-use App\Models\Permission;
+use Permission;
 use App\Models\Position;
 trait HasPagesAndPermissions
 {

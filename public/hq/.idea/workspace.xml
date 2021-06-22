@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="09fc0348-416b-403f-8a4d-3feecb0170cc" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/plugins/treeview/css/treeview.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/treeview/js/treeview.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/treeview2.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/treeview.html" beforeDir="false" afterPath="$PROJECT_DIR$/treeview.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1oBrIBK8Oauvi2r4kAka4jM2C9O" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="09fc0348-416b-403f-8a4d-3feecb0170cc" name="Default Changelist" comment="" />
+      <created>1575352584319</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1575352584319</updated>
+      <workItem from="1575352586461" duration="8297000" />
+      <workItem from="1575419651434" duration="10884000" />
+      <workItem from="1575506574415" duration="1816000" />
+      <workItem from="1575591481023" duration="16476000" />
+      <workItem from="1575856146308" duration="17867000" />
+      <workItem from="1575949577683" duration="19000" />
+      <workItem from="1575956088945" duration="3913000" />
+      <workItem from="1576217849509" duration="8427000" />
+      <workItem from="1576723046147" duration="8947000" />
+      <workItem from="1577062050782" duration="24000" />
+      <workItem from="1612770743850" duration="2108000" />
+      <workItem from="1612828197826" duration="2563000" />
+      <workItem from="1612850070853" duration="939000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1612850637595">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1612850637595" />
+  </component>
+</project>

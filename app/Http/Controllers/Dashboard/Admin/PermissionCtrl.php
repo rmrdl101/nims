@@ -9,8 +9,8 @@
 namespace App\Http\Controllers\Dashboard\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Page;
-use App\Models\Permission;
+use App\Models\Dashboard\Admin\Page;
+use App\Models\Dashboard\Admin\Permission;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -23,23 +23,6 @@ class PermissionCtrl extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      * @throws \Exception
      */
-    public function indexTEST(Request $request)
-    {
-        //set page slug
-        $thisPageSlug = 'permissions'; //change this to this page slug
-
-        $thisPage = Page::where('slug',$thisPageSlug)->first();
-
-        //retrieve user's data
-        $getUser = Auth::user();
-
-        $boundPerm = $getUser->positions
-            ->first()
-            ->permissions
-            ->where('pivot.page_id','=',$thisPage->id);
-
-       return $boundPerm->first()->slug;
-    }
 
     public function index(Request $request)
     {

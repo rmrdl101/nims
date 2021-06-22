@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\BedOccupancy;
-use App\Models\Department;
+use App\Models\Dashboard\Admin\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,20 +17,27 @@ class BedOccupancyCtrl extends Controller
      */
     public function index()
     {
-        $departments = Department::where('slug','!=','admin')
+        $wards = Department::where('slug','!=','admin')
+            ->where('slug','!=','surgical-complex')
+            ->where('slug','!=','obstetrical-complex')
             ->where('slug','!=','out-patient-department')
             ->where('slug','!=','central-supply-room')
-            ->where('slug','!=','infection-prevention-control-committee')
+            ->where('slug','!=','infection-prevention-and-control-center')
+            ->where('slug','!=','maternal-newborn-and-child-health-nutrition-department')
+            ->where('slug','!=','critical-care-unit')
+            ->where('slug','!=','nursing-service-office')
+            ->where('slug','!=','human-resource-office')
             ->get();
-                $fbConfig = '{
-                    apiKey: "AIzaSyAMF2WKF0FQC1qN3cJgnij5N5LUm1fYDiM",
-                    authDomain: "tdh-nims.firebaseapp.com",
-                    databaseURL: "https://tdh-nims.firebaseio.com",
-                    projectId: "tdh-nims",
-                    storageBucket: "tdh-nims.appspot.com",
-                    messagingSenderId: "55371576550",
-                    appId: "1:55371576550:web:b083120a2ec8ef9faff727"
-                }';
+
+            $fbConfig = '{
+                apiKey: "AIzaSyAMF2WKF0FQC1qN3cJgnij5N5LUm1fYDiM",
+                authDomain: "tdh-nims.firebaseapp.com",
+                databaseURL: "https://tdh-nims.firebaseio.com",
+                projectId: "tdh-nims",
+                storageBucket: "tdh-nims.appspot.com",
+                messagingSenderId: "55371576550",
+                appId: "1:55371576550:web:b083120a2ec8ef9faff727"
+            }';
 
 //                $dataA = BedOccupancy::all()->where('field', '=', 'ER')->first();
 
@@ -42,7 +49,7 @@ class BedOccupancyCtrl extends Controller
             'leaves' => '',
 
             'fbConf' => $fbConfig,
-            'departments' => $departments
+            'wards' => $wards
 //                    'dataA' => $dataA
         ]);
 
@@ -51,10 +58,22 @@ class BedOccupancyCtrl extends Controller
 
     public function overview()
     {
+        $fbConfig = '{
+                    apiKey: "AIzaSyAMF2WKF0FQC1qN3cJgnij5N5LUm1fYDiM",
+                    authDomain: "tdh-nims.firebaseapp.com",
+                    databaseURL: "https://tdh-nims.firebaseio.com",
+                    projectId: "tdh-nims",
+                    storageBucket: "tdh-nims.appspot.com",
+                    messagingSenderId: "55371576550",
+                    appId: "1:55371576550:web:b083120a2ec8ef9faff727"
+                }';
+
         return view('dashboard.bed-occupancy.overview', [
             // navigation
             'tree' => 'Main',
-            'branch' => 'Bed Occupancy Overview'
+            'branch' => 'Bed Occupancy Overview',
+
+            'fbConf' => $fbConfig
         ]);
     }
 

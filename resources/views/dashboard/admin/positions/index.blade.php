@@ -1,3 +1,11 @@
+{{--Controller for NIMS version 1.0--}}
+{{--lastEditDate="06-14-2021"--}}
+{{--lastEditBy="Roland Lagos"--}}
+{{--note--}}
+{{---Position should be not as per employment designation rather as a collective designation example (OB-Nurse, OR-Nursing Attendant)--}}
+
+
+
 @extends('dashboard.layouts.main')
 
 @section('page_css')
@@ -40,7 +48,6 @@
                     </div>
                 </div>
                 <!-- /.box-body -->
-
             </div>
         </row>
     </section>
@@ -81,13 +88,13 @@
                             <div id="table_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <table class="table table-bordered data-table-2" width="100%">
+                                        <table class="table table-bordered data-table-2">
                                             <thead>
-                                            <tr id="">
-                                                <th>Tick</th>
-                                                <th>Pages</th>
-                                                <th>Permissions</th>
-                                            </tr>
+                                                <tr>
+                                                    <th>Tick</th>
+                                                    <th>Pages</th>
+                                                    <th>Permissions</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
                                             </tbody>
@@ -172,7 +179,7 @@
                 columns: [
                     {data: 'tick', name: 'tick'},
                     {data: 'name', name: 'name'},
-                    {data: 'permissionB', name: 'permissionB', orderable: false},
+                    {data: 'permissionB', name: 'permissionB', orderable: false, searchable: false},
                 ]
             });
 
@@ -182,7 +189,7 @@
                 $('input:checkbox').removeAttr('checked');
             });
 
-            /* When click New customer button */
+            /* When click New Position */
             $('#new-data').click(function () {
                 $('#add-data').val("Create").attr('data-id', 1);
                 $('#crudModal').html("Add New User");
@@ -224,6 +231,7 @@
 
             /* Edit data */
             $('body').on('click', '#edit-data', function () {
+                tableB.ajax.reload();
                 var item_id = $(this).data('id');
                 $('#add-data').attr('data-id', 0);
                 $.get('positions/'+item_id+'/edit', function (data) {

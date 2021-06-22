@@ -18,7 +18,7 @@ class ScheduleCtrl extends Controller
         return view('dashboard.schedules.index', [
             // navigation
             'tree' => 'Dashboard',
-            'branch' => 'Schedules',
+            'branch' => 'Schedule',
             'twig' => '',
             'leaves' => ''
         ]);

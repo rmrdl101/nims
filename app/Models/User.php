@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Dashboard\Admin\Department;
 use App\Traits\HasPositionsAndPermissions;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Dashboard\Admin\Position;
 
 class User extends Authenticatable
 {
@@ -53,5 +54,9 @@ class User extends Authenticatable
     public function positions()
     {
         return $this->belongsToMany(Position::class, 'user_position');
+    }
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class, 'user_department');
     }
 }

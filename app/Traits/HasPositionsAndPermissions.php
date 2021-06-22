@@ -2,9 +2,8 @@
 
 namespace App\Traits;
 
-use App\Models\Page;
-use App\Models\Permission;
-use App\Models\Position;
+use App\Models\Dashboard\Admin\Position;
+
 trait HasPositionsAndPermissions
 {
 

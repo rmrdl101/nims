@@ -10,7 +10,7 @@
 
 @section('page_css')
     <!-- Data Tables -->
-    <link href="{{ url('/') }}/plugins/DataTables/datatables.min.css" rel="stylesheet">
+    <link href="{{ url('/') }}/dash/plugins/DataTables/datatables.min.css" rel="stylesheet">
 @endsection
 
 @section('main-content')
@@ -18,53 +18,126 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
+                <div class="col-md-4">
+                    <!-- Custom Tabs -->
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Ward</a></li>
+                            <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">OR</a></li>
+                            <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false">LRDR</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_1">
+                                <!-- gen ward -->
+                                <form role="form" id="bedOccupancyGenWard">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label for="genward">Area/Department</label>
+                                            <select class="form-control ad" name="ad" id="genward">
+                                                <option><--select area--></option>
+                                                @foreach($wards as $ward)
+                                                    <option value="{{ $ward->slug }}">{{ $ward->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="genwardA">Actual Beds</label>
+                                            <input type="number" class="form-control" name="genwardA" id="genwardA">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="genwardCen">Census</label>
+                                            <input type="number" class="form-control" name="genwardCen" id="genwardCen">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="genwardMGH">May Go Home</label>
+                                            <input type="number" class="form-control" name="genwardMGH" id="genwardMGH">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="genwardDis">Discharge</label>
+                                            <input type="number" class="form-control" name="genwardDis" id="genwardDis">
+                                        </div>
+                                    </div>
+                                    <!-- /.box-body -->
 
-                <div class="col-sm-6">
-                    <!-- Default box -->
-                    <div class="box box-primary">
+                                    <div class="box-footer">
+                                        <button type="submit" class="btn btn-primary nffc">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="tab_2">
+                                <!-- or -->
+                            </div>
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="tab_3">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                                It has survived not only five centuries, but also the leap into electronic typesetting,
+                                remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+                                sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
+                                like Aldus PageMaker including versions of Lorem Ipsum.
+                            </div>
+                            <!-- /.tab-pane -->
+                        </div>
+                        <!-- /.tab-content -->
+                    </div>
+                    <!-- nav-tabs-custom -->
+                </div>
+                <div class="col-sm-8 connectedSortable">
+                    <!-- AREA CHART -->
+                    <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Bed Occupancy</h3>
+                            <h3 class="box-title">Special Areas</h3>
                         </div>
                         <!-- /.box-header -->
-                        <!-- form start -->
-                        <form role="form" id="bedOccupancy">
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Area/Department</label>
-                                    <select class="form-control ad" name="ad" id="ad">
-                                        <option><--select area--></option>
-                                        @foreach($departments as $department)
-                                        <option value="{{ $department->slug }}">{{ $department->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Actual Beds</label>
-                                    <input type="number" class="form-control" name="a" id="a">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Census</label>
-                                    <input type="number" class="form-control cen" name="cen" id="cen">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">May Go Home</label>
-                                    <input type="number" class="form-control mgh" name="mgh" id="mgh">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Discharge</label>
-                                    <input type="number" class="form-control dis" name="dis" id="dis">
-                                </div>
-                            </div>
-                            <!-- /.box-body -->
+                        <div class="box-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <th style="width: 10px">Dept.</th>
+                                    <th>Actual Beds</th>
+                                    <th>Ongoing Surgery</th>
+                                    <th>Trans-Out</th>
+                                </tr>
+                                <tr>
+                                    <td>OR</td>
+                                    <td id="operating-room1">0</td>
+                                    <td id="operating-room2">0</td>
+                                    <td id="operating-room3">0</td>
+                                </tr>
+                                <tr>
+                                    <th style="width: 10px">Dept.</th>
+                                    <th>Actual Beds</th>
+                                    <th>On Labor</th>
+                                    <th>Trans-Out</th>
+                                </tr>
+                                <tr>
+                                    <td>LRDR</td>
+                                    <td id="obstetrical-complex1">0</td>
+                                    <td id="obstetrical-complex2">0</td>
+                                    <td id="obstetrical-complex3">0</td>
+                                </tr>
+                                <tr>
+                                    <th style="width: 10px">Dept.</th>
+                                    <th>Actual Beds</th>
+                                    <th>Census</th>
+                                    <th>Trans-Out</th>
+                                </tr>
+                                <tr>
+                                    <td>IMCU</td>
+                                    <td id="critical-care-unit1">0</td>
+                                    <td id="critical-care-unit2">0</td>
+                                    <td id="critical-care-unit3">0</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer clearfix">
 
-                            <div class="box-footer">
-                                <button type="submit" class="btn btn-primary nffc">Submit</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
-
-                <div class="col-sm-6 connectedSortable">
                     <!-- AREA CHART -->
                     <div class="box">
                         <div class="box-header with-border">
@@ -94,28 +167,6 @@
                                     {{--<td id="ER3">{{ $dataA->val3 }}</td>--}}
                                     {{--<td id="ER4">{{ $dataA->val4 }}</td>--}}
                                 </tr>
-
-                                <tr>
-                                    <td>OR</td>
-                                    <td id="operating-room1">0</td>
-                                    <td id="operating-room2">0</td>
-                                    <td id="operating-room3">0</td>
-                                    <td id="operating-room4">0</td>
-                                </tr>
-                                <tr>
-                                    <td>LRDR</td>
-                                    <td id="labor-room-delivery-room1">0</td>
-                                    <td id="labor-room-delivery-room2">0</td>
-                                    <td id="labor-room-delivery-room3">0</td>
-                                    <td id="labor-room-delivery-room4">0</td>
-                                </tr>
-                                <tr>
-                                    <td>IMCU</td>
-                                    <td id="critical-care-unit1">0</td>
-                                    <td id="critical-care-unit2">0</td>
-                                    <td id="critical-care-unit3">0</td>
-                                    <td id="critical-care-unit4">0</td>
-                                </tr>
                                 <tr>
                                     <td>PedW</td>
                                     <td id="pediatric-ward1">0</td>
@@ -139,17 +190,17 @@
                                 </tr>
                                 <tr>
                                     <td>OB HR</td>
-                                    <td id="ob-high-risk1">0</td>
-                                    <td id="ob-high-risk2">0</td>
-                                    <td id="ob-high-risk3">0</td>
-                                    <td id="ob-high-risk4">0</td>
+                                    <td id="obstetrical-high-risk1">0</td>
+                                    <td id="obstetrical-high-risk2">0</td>
+                                    <td id="obstetrical-high-risk3">0</td>
+                                    <td id="obstetrical-high-risk4">0</td>
                                 </tr>
                                 <tr>
                                     <td>OB LR</td>
-                                    <td id="ob-low-risk1">0</td>
-                                    <td id="ob-low-risk2">0</td>
-                                    <td id="ob-low-risk3">0</td>
-                                    <td id="ob-low-risk4">0</td>
+                                    <td id="obstetrical-low-risk1">0</td>
+                                    <td id="obstetrical-low-risk2">0</td>
+                                    <td id="obstetrical-low-risk3">0</td>
+                                    <td id="obstetrical-low-risk4">0</td>
                                 </tr>
                                 <tr>
                                     <td>OPD</td>
@@ -245,7 +296,7 @@
 
 @section('page_js')
     <!-- Data Tables -->
-    <script src="{{ url('/') }}/plugins/DataTables/datatables.min.js"></script>
+    <script src="{{ url('/') }}/dash/plugins/DataTables/datatables.min.js"></script>
 
     <script type="text/javascript">
 
@@ -416,15 +467,15 @@
             {{--$('#dis').val({{ $dataA->val4 }}).fadeIn(300);--}}
         {{--});--}}
 
-        $('#bedOccupancy').on('submit',function (e) {
+        $('#bedOccupancyGenWard').on('submit',function (e) {
             e.preventDefault();
 
-            fields = document.getElementById('ad').value;
+            fields = document.getElementById('genward').value;
 
-            var a = $('input[name = a]').val();
-            var cen = $('input[name = cen]').val();
-            var mgh = $('input[name = mgh]').val();
-            var dis = $('input[name = dis]').val();
+            var a = $('input[name = genwardA]').val();
+            var cen = $('input[name = genwardCen]').val();
+            var mgh = $('input[name = genwardMGH]').val();
+            var dis = $('input[name = genwardDis]').val();
 
 
             var d1 = (a)? fields+'1' : fields;

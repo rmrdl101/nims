@@ -2,7 +2,7 @@
 
 namespace App\Policies\Admin;
 
-use App\Models\Permission;
+use App\Models\Dashboard\Admin\Permission;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

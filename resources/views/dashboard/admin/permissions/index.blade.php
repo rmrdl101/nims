@@ -12,6 +12,13 @@
 @section('page_css')
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ url('/') }}/dash/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+
+    <style>
+        .swal2-styled.swal2-confirm {
+            background-color: red;
+            color: white;
+        }
+    </style>
 @endsection
 
 @section('main-content')
@@ -20,7 +27,7 @@
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">{{ $leaves }} List</h3>
-                    @if ($create)
+                    @if ($create) // check if this allowed to create
                     <div class="box-tools">
                         <a id="new-data" data-toggle="modal" class="btn btn-info">Add Permission</a>
                     </div>
@@ -39,7 +46,7 @@
                                                 <th width="5%">No</th>
                                                 <th>Name</th>
                                                 <th>Slug</th>
-                                                <th width="20%">Actions</th>
+                                                <th width="10%">Actions</th>
                                             @else
                                                 <th width="5%">No</th>
                                                 <th>Name</th>
@@ -50,17 +57,17 @@
                                     <tbody>
                                     </tbody>
                                 </table>
+                                <!-- /.table -->
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- /.box-body -->
-
             </div>
         </row>
     </section>
 
-    @if($create || $update)
+    @if($create||$update)
     <!-- Add and Edit Permission Modal -->
     <div class="modal fade" id="crud-modal" aria-hidden="true" >
         <div class="modal-dialog">
@@ -144,6 +151,8 @@
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
+                responsive: true,
+                bLengthChange: false,
                 ajax: "{{ url('dashboard/admin/permissions') }}",
                 columns: [
                     @if(in_array($read||$update||$delete, $permArray))
@@ -182,11 +191,13 @@
             $('#add-form').on('submit', function (e) {
                 e.preventDefault();
                 var item_id = $('#add-data').attr('data-id');
+
                 var edit = $('#edit').val();
+
                 if(item_id == 0){
                     var url = "{{ url('dashboard/admin/permissions') }}/" + edit;
 
-                }else if (item_id ==1){
+                }else if (item_id == 1){
                     var url = "{{ url('dashboard/admin/permissions') }}";
                 }
 
@@ -253,11 +264,17 @@
                 var item_id = $(this).data('id');
                 var token = $("meta[name='csrf-token']").attr("content");
                 Swal.fire({
-                    title: "Are you sure you want to delete this permission?",
+                    title: "Are you sure you want to DELETE this permission?",
                     icon: 'warning',
                     showDenyButton: true,
-                    denyButtonText: `No`,
+                    showCancelButton: true,
                     confirmButtonText: `Yes`,
+                    denyButtonText: `No`,
+                    customClass: {
+                        cancelButton: 'order-1 right-gap',
+                        confirmButton: 'order-2',
+                        denyButton: 'order-3',
+                    }
                 }).then((result) => {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
@@ -270,6 +287,7 @@
                                 "_token": token,
                             },
                             success: function (data) {
+                                console.log(data);
                                 table.ajax.reload();
                                 Swal.fire('Permission deleted!', '', 'success')
                             },

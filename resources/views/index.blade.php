@@ -7,10 +7,28 @@
 @section('page_css')
     <style>
         .active {
-            background-color: blue;
+            background-color: maroon;
             color: white;
         }
+        .btn:focus {
+            box-shadow: none!important;
+        }
     </style>
+@endsection
+
+@section('header')
+    <!-- Header -->
+    <header class="bg-success py-3 mb-5">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-lg-12">
+                    <div class="banner mt-5">
+                        <img src="{{ url('/') }}/hq/images/banner.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 @endsection
 
 @section('mainContent')
@@ -39,10 +57,10 @@
                                     <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" name="login-submit" id="login-submit" class="form-control btn btn-success" value="Log In">
+                                    <input type="submit" name="login-submit" id="login-submit" class="form-control btn" style="background-color: maroon;color: white;" value="Log In">
                                 </div>
                                 <div class="form-group">
-                                    <a href="https://phpoll.com/recover" class="forgot-password">Forgot Password?</a>
+                                    <a href="#" class="forgot-password">Forgot Password?</a>
                                 </div>
                             </form>
                             <form id="register-form" action="{{ url('register') }}" method="POST" role="form" style="display: none;">
@@ -60,7 +78,7 @@
                                     <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Confirm Password" required>
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-info" value="Register Now">
+                                    <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn" style="background-color: maroon;color: white;" value="Register Now">
                                 </div>
                             </form>
                         </div>
@@ -73,46 +91,22 @@
         <!-- Call to Action Well -->
         <div class="card text-white bg-secondary my-5 text-center">
             <div class="card-body">
-                <marquee class="text-white m-0">Deadline for submission of Monetization application will be on December XX, 2020</marquee>
+                <marquee class="text-white m-0">Welcome to NIMS Portal</marquee>
             </div>
         </div>
 
         <!-- Content Row -->
         <div class="row">
             <div class="col-md-4 mb-5">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h2 class="card-title">Card One</h2>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary btn-sm">More Info</a>
-                    </div>
-                </div>
+                <div class="fb-post" data-href="https://www.facebook.com/TDHNursingService/posts/1007348243406363" data-width="auto" data-show-text="true"><blockquote cite="https://www.facebook.com/TDHNursingService/posts/1007348243406363" class="fb-xfbml-parse-ignore"><p>June 10-11, 2021 - a very productive session for our Admin and other NSD Personnel as they embarked on an interactive...</p>Posted by <a href="https://www.facebook.com/TDHNursingService/">Cebu South Medical Center Nursing Service</a> on&nbsp;<a href="https://www.facebook.com/TDHNursingService/posts/1007348243406363">Sunday, June 13, 2021</a></blockquote></div>
             </div>
             <!-- /.col-md-4 -->
             <div class="col-md-4 mb-5">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h2 class="card-title">Card Two</h2>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary btn-sm">More Info</a>
-                    </div>
-                </div>
+                <div class="fb-post" data-href="https://www.facebook.com/TDHNursingService/posts/1004755066999014" data-width="auto" data-show-text="true"><blockquote cite="https://www.facebook.com/TDHNursingService/posts/1004755066999014" class="fb-xfbml-parse-ignore"><p>June 9, 2021 - CSMC Nursing Service was invited to share best practices on the division’s COVID-19 Response in a collaborative activity with the Western Visayas Sanitarium Nursing Service Division.</p>Posted by <a href="https://www.facebook.com/TDHNursingService/">Cebu South Medical Center Nursing Service</a> on&nbsp;<a href="https://www.facebook.com/TDHNursingService/posts/1004755066999014">Wednesday, June 9, 2021</a></blockquote></div>
             </div>
             <!-- /.col-md-4 -->
             <div class="col-md-4 mb-5">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h2 class="card-title">Card Three</h2>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary btn-sm">More Info</a>
-                    </div>
-                </div>
+                <div class="fb-post" data-href="https://www.facebook.com/TDHNursingService/posts/997595691048285" data-width="auto" data-show-text="true"><blockquote cite="https://www.facebook.com/TDHNursingService/posts/997595691048285" class="fb-xfbml-parse-ignore"><p>May 27, 2021 - Advanced Cardiac Life Support (ACLS) Training by the Americal Heart Association (AHA).</p>Posted by <a href="https://www.facebook.com/TDHNursingService/">Cebu South Medical Center Nursing Service</a> on&nbsp;<a href="https://www.facebook.com/TDHNursingService/posts/997595691048285">Saturday, May 29, 2021</a></blockquote></div>
             </div>
             <!-- /.col-md-4 -->
 
@@ -123,7 +117,17 @@
     <!-- /.container -->
 @endsection
 
+@section('footer')
+    <footer class="py-md-3 bg-dark footer">
+        <div class="container">
+            <font class="text-white">Copyright &copy; CSMC iHOMP 2021</font>
+        </div>
+        <!-- /.container -->
+    </footer>
+@endsection
+
 @section('page_js')
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v11.0" nonce="KPMExV8O"></script>
     <script>
         $(function() {
             $('#login-form-link').click(function(e) {

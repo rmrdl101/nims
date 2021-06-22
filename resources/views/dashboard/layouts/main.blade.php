@@ -24,32 +24,19 @@
         <link rel="stylesheet" href="{{ url('/') }}/dash/bower_components/Ionicons/css/ionicons.min.css">
         <!-- Theme style -->
         <link rel="stylesheet" href="{{ url('/') }}/dash/dist/css/AdminLTE.min.css">
-        <!-- AdminLTE Skins. Choose a skin from the css/skins
-             folder instead of downloading all of them to reduce the load. -->
+        <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="{{ url('/') }}/dash/dist/css/skins/_all-skins.min.css">
-        <!-- Morris chart -->
-        <link rel="stylesheet" href="{{ url('/') }}/dash/bower_components/morris.js/morris.css">
         <!-- jvectormap -->
         <link rel="stylesheet" href="{{ url('/') }}/dash/bower_components/jvectormap/jquery-jvectormap.css">
-        <!-- Date Picker -->
-        <link rel="stylesheet" href="{{ url('/') }}/dash/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
-        <!-- Daterange picker -->
-        <link rel="stylesheet" href="{{ url('/') }}/dash/bower_components/bootstrap-daterangepicker/daterangepicker.css">
         <!-- bootstrap wysihtml5 - text editor -->
         <link rel="stylesheet" href="{{ url('/') }}/dash/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
         <!-- SweetAlert2 -->
         <link rel="stylesheet" href="{{ url('/') }}/dash/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
+        <!-- Google Font -->
+{{--        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">--}}
 
         @yield('page_css')
-        <!-- Google Font -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     </head>
 
     <body class="hold-transition skin-blue sidebar-mini">
@@ -57,7 +44,7 @@
 
             <header class="main-header">
                 <!-- Logo -->
-                <a href="{{ url('/dashboard') }}" class="logo">
+                <a href="{{ route('dashboard') }}" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><b>C</b>N</span>
                     <!-- logo for regular state and mobile devices -->
@@ -105,7 +92,7 @@
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
                                         <div class="pull-left">
-                                            <a href="{{ url('dashboard/profile') }}" class="btn btn-default btn-flat">Profile</a>
+                                            <a href="{{ url('dashboard.profile') }}" class="btn btn-default btn-flat">Profile</a>
                                         </div>
                                         <div class="pull-right">
                                             <a href="{{ url('logout') }}" class="btn btn-default btn-flat">Sign out</a>
@@ -154,13 +141,13 @@
                 <section class="content-header">
                     <h1>
                         @if($leaves != "")
-                            {{ $leaves }}s
+                            {{ $leaves }}
                         @elseif($twig != "")
-                            {{ $twig }}s
+                            {{ $twig }}
                         @elseif($branch != "")
-                            {{ $branch }}s
+                            {{ $branch }}
                         @elseif($tree != "")
-                            {{ $tree }}s
+                            {{ $tree }}
                         @endif
 
                     </h1>
@@ -215,8 +202,6 @@
         <script src="{{ url('/') }}/dash/bower_components/fastclick/lib/fastclick.js"></script>
         <!-- AdminLTE App -->
         <script src="{{ url('/') }}/dash/dist/js/adminlte.min.js"></script>
-        {{--<!-- AdminLTE dashboard demo (This is only for demo purposes) -->--}}
-        {{--<script src="{{ url('/') }}/dist/js/pages/dashboard.js"></script>--}}
         <!-- AdminLTE for demo purposes -->
         <script src="{{ url('/') }}/dash/dist/js/demo.js"></script>
 

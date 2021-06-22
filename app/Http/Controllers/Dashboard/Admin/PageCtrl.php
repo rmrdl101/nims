@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Dashboard\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Page;
-use App\Models\Permission;
+use App\Models\Dashboard\Admin\Page;
+use App\Models\Dashboard\Admin\Permission;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
