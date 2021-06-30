@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\AccomplishmentReport;
 
 use App\Http\Controllers\Controller;
 use App\Models\KPI;
@@ -15,9 +15,9 @@ class KPICtrl extends Controller
      */
     public function index()
     {
-        return view('dashboard.key-performance-indicators.index', [
+        return view('accomplishment-reports.key-performance-indicators.index', [
             // navigation
-            'tree' => 'Dashboard',
+            'tree' => 'Accomplishment Report',
             'branch' => 'Key Performance Indicators',
             'twig' => '',
             'leaves' => ''

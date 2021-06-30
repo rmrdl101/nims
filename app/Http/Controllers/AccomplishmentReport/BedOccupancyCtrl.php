@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\AccomplishmentReport;
 
 use App\Http\Controllers\Controller;
-use App\Models\BedOccupancy;
+use App\Models\AccomplishmentReport\BedOccupancy;
 use App\Models\Dashboard\Admin\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,9 +41,9 @@ class BedOccupancyCtrl extends Controller
 
 //                $dataA = BedOccupancy::all()->where('field', '=', 'ER')->first();
 
-        return view('dashboard.bed-occupancy.index', [
+        return view('accomplishment-reports.bed-occupancy.index', [
             // navigation
-            'tree' => 'Dashboard',
+            'tree' => 'Accomplishment Report',
             'branch' => 'Bed Occupancy',
             'twig' => '',
             'leaves' => '',

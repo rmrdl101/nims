@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\AccomplishmentReport;
 
 use App\Http\Controllers\Controller;
-use App\Models\Dashboard\Intranet;
+use App\Models\Dashboard\ESR;
 use Illuminate\Http\Request;
 
-class IntranetCtrl extends Controller
+class ESRCtrl extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,13 +15,7 @@ class IntranetCtrl extends Controller
      */
     public function index()
     {
-        return view('dashboard.document-manager.index', [
-            // navigation
-            'tree' => 'Intranet',
-            'branch' => '',
-            'twig' => '',
-            'leaves' => '',
-        ]);
+        //
     }
 
     /**
@@ -48,10 +42,10 @@ class IntranetCtrl extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Dashboard\Intranet  $intranet
+     * @param  \App\Models\Dashboard\ESR  $eSR
      * @return \Illuminate\Http\Response
      */
-    public function show(Intranet $intranet)
+    public function show(ESR $eSR)
     {
         //
     }
@@ -59,10 +53,10 @@ class IntranetCtrl extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Dashboard\Intranet  $intranet
+     * @param  \App\Models\Dashboard\ESR  $eSR
      * @return \Illuminate\Http\Response
      */
-    public function edit(Intranet $intranet)
+    public function edit(ESR $eSR)
     {
         //
     }
@@ -71,10 +65,10 @@ class IntranetCtrl extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Dashboard\Intranet  $intranet
+     * @param  \App\Models\Dashboard\ESR  $eSR
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Intranet $intranet)
+    public function update(Request $request, ESR $eSR)
     {
         //
     }
@@ -82,10 +76,10 @@ class IntranetCtrl extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Dashboard\Intranet  $intranet
+     * @param  \App\Models\Dashboard\ESR  $eSR
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Intranet $intranet)
+    public function destroy(ESR $eSR)
     {
         //
     }

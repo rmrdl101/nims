@@ -70,8 +70,8 @@
                         <table class="table table-sm table-border">
                             <tr>
                                 <td class="text-center text-white">Actual Beds</td>
-                                <td class="text-center text-white">MGH</td>
-                                <td class="text-center text-white">Discharge</td>
+                                <td class="text-center text-white">Referral</td>
+                                <td class="text-center text-white">Trans-Out</td>
                             </tr>
                             <tr>
                                 <td id="emergency-room1" class="text-center text-white">0</td>
@@ -100,12 +100,14 @@
                         </div>
                         <table class="table table-sm table-border">
                             <tr>
+                                <td class="text-center text-white">Trans-In</td>
                                 <td class="text-center text-white">Ongoing Surgeries</td>
-                                <td class="text-center text-white">For Trans-Out</td>
+                                <td class="text-center text-white">Trans-Out</td>
                             </tr>
                             <tr>
                                 <td id="surgical-complex2" class="text-center text-white">0</td>
                                 <td id="surgical-complex3" class="text-center text-white">0</td>
+                                <td id="surgical-complex4" class="text-center text-white">0</td>
                             </tr>
                         </table>
                     </div>
@@ -129,12 +131,14 @@
                         </div>
                         <table class="table table-sm table-border">
                             <tr>
+                                <td class="text-center text-white">Trans-In</td>
                                 <td class="text-center text-white">On Labor</td>
-                                <td class="text-center text-white">For Trans-Out</td>
+                                <td class="text-center text-white">Trans-Out</td>
                             </tr>
                             <tr>
                                 <td id="obstetrical-complex2" class="text-center text-white">0</td>
-                                <td id="obstetrical-complex3" class="text-center text-white">0</td>
+                                <td id="obstetrical-complex2" class="text-center text-white">0</td>
+                                <td id="obstetrical-complex4" class="text-center text-white">0</td>
                             </tr>
                         </table>
                     </div>
@@ -152,7 +156,7 @@
                         </h4>
                         <div class="small-box bg-red">
                             <div class="inner">
-                                <h3 id="critical-care-unit2">0</h3>
+                                <h3 id="critical-care-unit2">0<span style="font-size: small;">/ 10 actual beds</span></h3>
                                 <p>Census</p>
                             </div>
                             <div class="icon">
@@ -161,7 +165,7 @@
                         </div>
                         <table class="table table-sm table-border">
                             <tr>
-                                <td class="text-center text-white">Actual Beds</td>
+                                <td class="text-center text-white">Trans-in</td>
                                 <td class="text-center text-white">MGH</td>
                                 <td class="text-center text-white">Discharge</td>
                             </tr>

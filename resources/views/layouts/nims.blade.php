@@ -39,6 +39,9 @@
 <!-- Bootstrap core JavaScript -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="{{ url('/') }}/dash/dist/sweetalert/sweetalert2.min.js"></script>
 {{--<!-- Bootstrap core JavaScript -->--}}
 {{--<script src="hq/js/jquery.min.js"></script>--}}
 {{--<script src="hq/js/bootstrap.bundle.min.js"></script>--}}

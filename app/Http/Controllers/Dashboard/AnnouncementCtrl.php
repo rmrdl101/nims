@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\Admin;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Dashboard\Admin\Department;
-use App\Models\Dashboard\Admin\Page;
+use App\Models\Dashboard\Announcement;
 use Illuminate\Http\Request;
+
+use App\Models\Dashboard\Admin\Page;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\DataTables;
 
-class DepartmentCtrl extends Controller
+class AnnouncementCtrl extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +20,8 @@ class DepartmentCtrl extends Controller
      */
     public function index(Request $request)
     {
-        //set page slug
-        $thisPageSlug = 'departments'; //change this to this page slug
+        //set page slug | change this to this page slug
+        $thisPageSlug = 'announcements';
 
         //retrieve this page
         $thisPage = Page::where('slug',$thisPageSlug)->first();
@@ -47,17 +48,17 @@ class DepartmentCtrl extends Controller
             $permArray = ['read','update','delete'];
             //done
             if ($request->ajax()) {
-                $data = Department::latest()->get();
+                $data = Announcement::latest()->get();
                 return DataTables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function ($row) {
 
-                        //set page slug
-                        $thisPageSlug = 'departments'; //change this to this page slug
+                        //set page slug | change this to this page slug
+                        $thisPageSlug = 'announcements';
 
                         $thisPage = Page::where('slug',$thisPageSlug)->first();
 
-                        //get list of permission bounded to this user
+                        //get list of permission bounded to this user for this page
                         $boundPerm = Auth::user()->positions
                             ->first()
                             ->permissions
@@ -79,9 +80,6 @@ class DepartmentCtrl extends Controller
                                         <a id="delete-data" data-id=' . $row->id . '><i class="fa fa-trash"></i></a>
                                         ';
                         }
-//                        if($boundPerm->where('slug','=',null)){
-//                            $action='';
-//                        }
 
                         return $action;
 
@@ -90,13 +88,14 @@ class DepartmentCtrl extends Controller
                     ->make(true);
             }
 
-            return view('dashboard.admin.departments.index', [
+            return view('dashboard.announcements.index', [
                 // navigation
                 'tree' => 'Dashboard',
-                'branch' => 'Admin',
-                'twig' => 'User Management',
-                'leaves' => 'Department',
+                'branch' => 'Announcement',
+                'twig' => '',
+                'leaves' => '',
 
+                //permission
                 'boundPerm' => $boundPerm,
                 'permArray' => $permArray,
                 'create' => $boundPerm->where('slug','=','create')->first(),
@@ -131,26 +130,14 @@ class DepartmentCtrl extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255',
-            'slug' => 'required|max:255'
+            'title' => 'required|max:255',
+            'contents' => 'required|max:255'
         ]);
 
-
-        $department = new Department();
-        $department->name = $request->name;
-        $department->slug = $request->slug;
-        $department->save();
-
-        $listOfPositions = explode(',', $request->positions);
-
-//        foreach ($listOfPositions as $position) {
-//            $positions = new Position();
-//            $positions->name = $position;
-//            $positions->slug = strtolower(str_replace(" ", "-", $position));
-//            $positions->save();
-//            $department->positions()->attach($positions->id);
-//            $department->save();
-//        }
+        $announce = new Announcement();
+        $announce->title = $request->title;
+        $announce->contents = $request->contents;
+        $announce->save();
 
         return redirect()->back();
     }
@@ -158,44 +145,43 @@ class DepartmentCtrl extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Department  $department
+     * @param  \App\Models\Dashboard\Announcement  $announcement
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $department)
+    public function show(Announcement $announcement)
     {
-        //
+        return Response::json($announcement);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Department  $department
+     * @param  \App\Models\Dashboard\Announcement  $announcement
      * @return \Illuminate\Http\Response
      */
-    public function edit(Department $department)
+    public function edit(Announcement $announcement)
     {
-        return Response::json($department);
+        return Response::json($announcement);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Department  $department
+     * @param  \App\Models\Dashboard\Announcement  $announcement
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Department $department)
+    public function update(Request $request, Announcement $announcement)
     {
-
         //validate the fields
         $request->validate([
-            'name' => 'required|max:255',
-            'slug' => 'required|max:255',
+            'title' => 'required|max:255',
+            'contents' => 'required|max:255',
         ]);
 
-        $department->name = $request->name;
-        $department->slug = $request->slug;
-        $department->save();
+        $announcement->title = $request->title;
+        $announcement->contents = $request->contents;
+        $announcement->save();
 
         return redirect()->back();
     }
@@ -203,11 +189,11 @@ class DepartmentCtrl extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Department  $department
+     * @param  \App\Models\Dashboard\Announcement  $announcement
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Department $department)
+    public function destroy(Announcement $announcement)
     {
-        $department->delete();
+        $announcement->delete();
     }
 }

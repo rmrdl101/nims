@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\DocumentManager;
 
 use App\Http\Controllers\Controller;
+use App\Models\Dashboard\Admin\Page;
 use App\Models\DocumentManager\Docview;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class DocviewCtrl extends Controller
@@ -29,61 +31,132 @@ class DocviewCtrl extends Controller
     public function index(Request $request)
     {
 
+        //set page slug
+        $thisPageSlug = 'document-manager';
+
+        $thisPage = Page::where('slug',$thisPageSlug)->first();
+
+        //retrieve user's data
+        $getUser = Auth::user();
+
+        //retrieve user's access to page
+        $pageAccess = $getUser->positions
+            ->first()
+            ->pages
+            ->where('slug','=',$thisPage->slug)
+            ->first();
+
         // Session::put("sessionPath",'');
         $rootDir = Storage::directories('documents');
         $dataS = Storage::allFiles('documents\Document Controlled Form');
 
 
-        if ($request->ajax()) {
+        //check if this page is added to position list of page under user
+        if (!empty($pageAccess) AND $pageAccess->slug = $thisPage->slug){
 
-            $path = Session::get("sessionPath") ? Session::get("sessionPath"): 'documents';
-            $data = Storage::files($path);
-            return DataTables::of($data)
-                ->addColumn('docCode', function ($row){
-                    $docName = pathinfo($row, PATHINFO_FILENAME);
-                    $docCode = explode("_",$docName,3)[0];
-                    return $docCode;
-                })
-                ->addColumn('docRev', function ($row){
-                    $docFName = pathinfo($row, PATHINFO_FILENAME);
-                    $docRev = explode("_",$docFName, 3)[1];
-                    return $docRev;
-                })
-                ->addColumn('docName', function ($row){
-                    $docFName = pathinfo($row, PATHINFO_FILENAME);
-                    $docName = explode("_",$docFName, 3)[2];
-                    return $docName;
-                })
-                ->addColumn('docExt', function ($row){
-                    $docExt = pathinfo($row, PATHINFO_EXTENSION);
-                    return $docExt;
-                })
-                ->addColumn('action', function ($row){
-                    $docFName = pathinfo($row, PATHINFO_FILENAME);
-                    $docName = explode("_",$docFName, 3)[2];
+            //retrieve approved permissions under this page for this user. This is use for create since it is blade based
+            $boundPerm = $getUser->positions
+                ->first()
+                ->permissions
+                ->where('pivot.page_id','=',$thisPage->id);
 
-                    $action = '';
-                    $action .= '<a id="view-doc" file-name="'.$docName.'" data-src="'.asset(str_replace('documents/','storage/', $row)).'"  data-toggle="modal" data-target="#modal-default"><i class="fa fa-eye"></i></a> ';
-                    $action .= ' <a id="view-doc" data-toggle="modal" data-src="'. $row .'"  ><i class="fa fa-download"></i></a>';
-                    $action .= '<meta name="csrf-token" content="{{ csrf_token() }}">
-                                        <a id="delete-data" data-path="' . $row . '"><i class="fa fa-trash text-danger"></i></a>
-                                ';
-                    return $action;
-                })
-                ->rawColumns(['docCode','docRev','docName','docExt','action'])
-                ->make(true);
+            $permArray = ['read','update','delete'];
+
+
+            if ($request->ajax()) {
+
+                $path = Session::get("sessionPath") ? Session::get("sessionPath"): 'documents';
+                $data = Storage::files($path);
+                return DataTables::of($data)
+                    ->addColumn('docCode', function ($row){
+                        $docName = pathinfo($row, PATHINFO_FILENAME);
+                        $docCode = explode("_",$docName,3)[0];
+                        return $docCode;
+                    })
+                    ->addColumn('docRev', function ($row){
+                        $docFName = pathinfo($row, PATHINFO_FILENAME);
+                        $docRev = explode("_",$docFName, 3)[1];
+                        return $docRev;
+                    })
+                    ->addColumn('docName', function ($row){
+                        $docFName = pathinfo($row, PATHINFO_FILENAME);
+                        $docName = explode("_",$docFName, 3)[2];
+                        return $docName;
+                    })
+                    ->addColumn('docExt', function ($row) {
+                        $filetype = pathinfo($row, PATHINFO_EXTENSION);
+
+                        $docExt = '';
+
+                        if ($filetype == 'pdf'){
+                            $docExt .= '<i style="color: orange" class="fa fa-file-pdf-o"></i>';
+                        }
+                        if ($filetype == 'doc'){
+                            $docExt .= '<i style="color: lightblue" class="fa fa-file-word-o"></i>';
+                        }
+                        if ($filetype == 'docx'){
+                            $docExt .= '<i style="color: blue" class="fa fa-file-word-o"></i>';
+                        }
+
+                        return $docExt;
+                    })
+                    ->addColumn('action', function ($row){
+
+                        //set page slug
+                        $thisPageSlug = 'document-manager'; //change this to this page slug
+
+                        $thisPage = Page::where('slug',$thisPageSlug)->first();
+
+                        //get list of permission bounded to this user
+                        $boundPerm = Auth::user()->positions
+                            ->first()
+                            ->permissions
+                            ->where('pivot.page_id','=',$thisPage->id);
+
+                        $docFName = pathinfo($row, PATHINFO_FILENAME);
+                        $docName = explode("_",$docFName, 3)[2];
+
+                        $action = '';
+                        if ($boundPerm->where('slug','=','read')->first()) {
+                            $action .= '<a id="view-doc" file-name="' . $docName . '" data-src="' . asset(str_replace('documents/', 'storage/', $row)) . '"  data-toggle="modal" data-target="#modal-default"><i class="fa fa-eye"></i></a> ';
+                        }
+//                        $action .= ' <a id="view-doc" data-toggle="modal" data-src="'. $row .'"  ><i class="fa fa-download"></i></a>';
+
+                        if ($boundPerm->where('slug','=','delete')->first()) {
+                            $action .= '<meta name="csrf-token" content="{{ csrf_token() }}">
+                                            <a id="delete-data" data-path="' . $row . '"><i class="fa fa-trash text-danger"></i></a>
+                                    ';
+                        }
+                        return $action;
+                    })
+                    ->rawColumns(['docCode','docRev','docName','docExt','action'])
+                    ->make(true);
+            }
+
+            return view('dashboard.document-manager.index', [
+                // navigation
+                'tree' => 'Document Manager',
+                'branch' => '',
+                'twig' => '',
+                'leaves' => '',
+
+                'root' => $rootDir,
+                'dataS' => $dataS,
+
+                //permissions
+                'boundPerm' => $boundPerm,
+                'permArray' => $permArray,
+                'create' => $boundPerm->where('slug','=','create')->first(),
+                'read' => $boundPerm->where('slug','=','read')->first(),
+                'update' => $boundPerm->where('slug','=','update')->first(),
+                'delete' => $boundPerm->where('slug','=','delete')->first(),
+                'newfolder' => $boundPerm->where('slug','=','new-folder')->first(),
+                'deletefolder' => $boundPerm->where('slug','=','delete-folder')->first()
+            ]);
+
+        }else{
+            return redirect('dashboard')->with('warning', 'Sorry, the page you do not have the permission to access this page. Kindly contact the system administrator. Thank you!');
         }
-
-        return view('dashboard.document-manager.index', [
-            // navigation
-            'tree' => 'Document Manager',
-            'branch' => '',
-            'twig' => '',
-            'leaves' => '',
-
-            'root' => $rootDir,
-            'dataS' => $dataS,
-        ]);
     }
 
     /**
@@ -193,83 +266,8 @@ class DocviewCtrl extends Controller
                 $folder .='</ul></li>';
             }
 
-
-//            @foreach( \Illuminate\Support\Facades\Storage::directories($subDir1) as $subDir2)
-//                                                <li><a href="#" class="folder-name" path="{{ $subDir2 }}" data-name="{{ str_replace('documents/','', $subDir2) }}">{{ str_replace($subDir1.'/','', $subDir2) }}</a>
-//                                                    <ul>
-//            @foreach( \Illuminate\Support\Facades\Storage::directories($subDir2) as $subDir3)
-//                                                            <li><a href="#" class="folder-name" path="{{ $subDir3 }}" data-name="{{ str_replace('documents/','', $subDir3) }}">{{ str_replace($subDir2.'/','', $subDir3) }}</a>
-//                                                                <ul></ul>
-//                                                            </li>
-//            @endforeach
-//                                                    </ul>
-//                                                </li>
-//            @endforeach
-//                                        </ul>
-//                                    </li>
-//            @endforeach
-//                                </ul>
-//                            </li>
-//            @endforeach
-
             return $folder;
         }
-
-//        if ($request->ajax()) {
-//            $data = Storage::directories('documents');
-//            return DataTables::of($data)
-//                ->addColumn('folder', function ($row) {
-////                    foreach($row as $rootDir){
-//
-//                        $folder = '<li><a href="#" class="folder-name" path="'.$row.'" data-name="'.str_replace('documents/','', $row).'">'.str_replace('documents/','', $row).'</a>';
-//
-//                        $subDirA = Storage::directories($row);
-//                        foreach($subDirA as $itemA)
-//                        {
-//                            $folder .='<ul>';
-//                            $folder .= '<li><a href="#" class="folder-name" path="'.$itemA.'" data-name="'.str_replace('documents/','', $itemA).'">'.str_replace($row.'/','', $itemA).'</li>';
-//                            $subDirB = Storage::directories($itemA);
-//                            foreach($subDirB as $itemB)
-//                            {
-//                                $folder .='<ul>';
-//                                $folder .= $itemB;
-//                                $folder .='</ul>';
-//                            }
-//                            $folder .='</ul>';
-//                        }
-//
-//
-////                    }
-////                    @foreach( \Illuminate\Support\Facades\Storage::directories($rootDir) as $subDir1)
-////                                    <li><a href="#"  class="folder-name" path="{{ $subDir1 }}" data-name="{{ str_replace('documents/','', $subDir1) }}">{{ str_replace($rootDir.'/','', $subDir1) }}</a>
-////                                        <ul>
-////                    @foreach( \Illuminate\Support\Facades\Storage::directories($subDir1) as $subDir2)
-////                                                <li><a href="#" class="folder-name" path="{{ $subDir2 }}" data-name="{{ str_replace('documents/','', $subDir2) }}">{{ str_replace($subDir1.'/','', $subDir2) }}</a>
-////                                                    <ul>
-////                    @foreach( \Illuminate\Support\Facades\Storage::directories($subDir2) as $subDir3)
-////                                                            <li><a href="#" class="folder-name" path="{{ $subDir3 }}" data-name="{{ str_replace('documents/','', $subDir3) }}">{{ str_replace($subDir2.'/','', $subDir3) }}</a>
-////                                                                <ul></ul>
-////                                                            </li>
-////                    @endforeach
-////                                                    </ul>
-////                                                </li>
-////                    @endforeach
-////                                        </ul>
-////                                    </li>
-////                    @endforeach
-////                                </ul>
-////                            </li>
-////                    @endforeach
-//
-//
-//
-//
-////                    $folder = str_replace('documents/', '', $row);
-//                    return $folder;
-//                })
-//                ->rawColumns(['folder'])
-//                ->make(true);
-//        }
     }
 
     public function newFolder(Request $request){
@@ -284,6 +282,7 @@ class DocviewCtrl extends Controller
         Storage::makeDirectory($request->input('fpath').'/'.$request->input('fname'));
         return $request;
     }
+
     public function deleteFolder(Request $request){
 
 //        return $request;

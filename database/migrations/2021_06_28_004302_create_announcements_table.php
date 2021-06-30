@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIntranetsTable extends Migration
+class CreateAnnouncementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateIntranetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('intranets', function (Blueprint $table) {
-            $table->id();
+        Schema::create('announcements', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('title');
+            $table->string('contents');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateIntranetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('intranets');
+        Schema::dropIfExists('announcements');
     }
 }

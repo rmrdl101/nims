@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Dashboard\Admin\Department;
-use App\Traits\HasPositionsAndPermissions;
+use App\Traits\HasDepartmentsPositionsPermissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,7 +11,7 @@ use App\Models\Dashboard\Admin\Position;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasPositionsAndPermissions;
+    use HasFactory, Notifiable, HasDepartmentsPositionsPermissions;
 
     /**
      * The attributes that are mass assignable.

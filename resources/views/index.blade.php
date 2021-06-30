@@ -42,6 +42,11 @@
             </div>
             <!-- /.col-lg-8 -->
             <div class="col-lg-4">
+                <row>
+                    <a href="{{ route('opdreg') }}" style="text-decoration: none"><button type="button" style="background-color: orange;color: white;" class="btn btn-default btn-block">OPD VIRTUAL CONSULTATION</button></a>
+                    <hr>
+                </row>
+                <row>
                     <div class="card">
                         <div class="card-header">
                             <a href="#" class="btn active" id="login-form-link">Login</a>
@@ -83,6 +88,7 @@
                             </form>
                         </div>
                     </div>
+                </row>
             </div>
             <!-- /.col-md-4 -->
         </div>
@@ -91,7 +97,7 @@
         <!-- Call to Action Well -->
         <div class="card text-white bg-secondary my-5 text-center">
             <div class="card-body">
-                <marquee class="text-white m-0">Welcome to NIMS Portal</marquee>
+                <marquee class="text-white m-0">{{ $announce->first()->contents }}</marquee>
             </div>
         </div>
 

@@ -1,7 +1,3 @@
-<!-- TODO
-    -reload file tree when adding and deleting folder
--->
-
 @extends('dashboard.layouts.main')
 
 @section('page_css')
@@ -45,11 +41,16 @@
                 <div id="table-id" class="box" style="display:none">
                     <div class="box-header">
                         <h3 class="box-title folder-show-name">Data Table With Full Features</h3>
-
                         <div class="box-tools">
-                            <a data-toggle="modal" class="btn btn-info" data-target="#add-folder">New Folder</a>
+                            @if($newfolder)
+                                <a data-toggle="modal" class="btn btn-info" data-target="#add-folder">New Folder</a>
+                            @endif
+                            @if($deletefolder)
                             <a class="btn btn-danger" id="delete-folder">Delete Folder</a>
+                            @endif
+                            @if($create)
                             <a data-toggle="modal" class="btn btn-info" data-target="#add-new-document">Add Document</a>
+                            @endif
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -61,11 +62,19 @@
                                     <table class="table table-bordered data-table" width="100%">
                                         <thead>
                                         <tr id="">
+
+                                            @if(in_array($read||$update||$delete, $permArray))
                                             <th>Code</th>
                                             <th>Revision</th>
                                             <th>Title</th>
                                             <th>File Type</th>
                                             <th>Action</th>
+                                            @else
+                                            <th>Code</th>
+                                            <th>Revision</th>
+                                            <th>Title</th>
+                                            <th>File Type</th>
+                                            @endif
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -81,11 +90,6 @@
 
                 </div>
                 <!-- /#table-id -->
-
-                {{--<div class="box">--}}
-                    {{--<iframe src="https://view.officeapps.live.com/op/view.aspx?src={{url("http://csmc.site/intranet/download/3")}}" frameborder="0" style="width:100%;min-height:640px;"></iframe>--}}
-                     {{--<iframe id="return-view" src="https://docs.google.com/gview?url=http://127.0.0.1/nims/storage/Document-Controlled-Form/NSD/0 Generic/FM/NSD-FM-01_5_Nurse Supervisor's Daily Endrosement Report.docx&embedded=true" title="views" style="width: 100%; height: 400px"></iframe> --}}
-                {{--</div>--}}
             </div>
         </div>
     </section>
@@ -187,69 +191,164 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var thisUrl = "{{ url('document-manager') }}";
 //            $('.file-tree').filetree();
 
-            var fileTree = $.ajax({
-                url: '{{route('file-tree')}}',
-                method: "GET",
-                contentType: false,
-                cache: false,
-                success: function (data) {
-                    $('.file-tree').html(data).filetree();
+            function fileTree() {
+                $.ajax({
+                    url: "{{route('file-tree')}}",
+                    method: 'GET',
+                    contentType: false,
+                    cache: false,
+                    ajax: {
+                        url: "{{ url("/store/path/") }}",
+                        type: 'POST',
+                        data: {
+                            path: 'documents/',
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(data){
+                            table.ajax.reload();
+                        }
+                    },
+                    success: function (data) {
+                        $('.file-tree').html(data).filetree();
 
-                    //Folder Tree View
-                    $('.folder-name').click( function () {
-                        var token = $("meta[name='csrf-token']").attr("content");
+                        //Folder Tree View
+                        $('.folder-name').click( function () {
+                            var token = $("meta[name='csrf-token']").attr("content");
 
-                        var path = $(this).attr('path');
+                            var path = $(this).attr('path');
 
-                        var name = $(this).attr('data-name');
+                            var name = $(this).attr('data-name');
 
-                        $('.box-title').html(name);
+                            $('.box-title').html(name);
 
-                        $('#route').val(path);
-                        $('#froute').val(path);
+                            $('#route').val(path);
+                            $('#froute').val(path);
 
-                        $('#welcome-msg').attr("style", "display:none")
+                            $('#welcome-msg').attr("style", "display:none")
 
-                        $('#table-id').removeAttr("style")
+                            $('#table-id').removeAttr("style")
 
-                        $.ajax({
-                            url: "{{ url("/store/path/") }}",
-                            type: 'POST',
-                            data: {
-                                path: path,
-                                _token: token,
-                            },
-                            success: function(data){
-                                // console.log(path);
-                                table.ajax.reload();
-                                // $('input[type=search]').val('');
-                            }
-                        })
+                            $.ajax({
+                                url: "{{ url("/store/path/") }}",
+                                type: 'POST',
+                                data: {
+                                    path: path,
+                                    _token: token,
+                                },
+                                success: function(data){
+                                    table.ajax.reload();
+                                }
+                            })
 
-                    });
-                },
-            });
+                        });
+                    },
+                });
+            }
+
+            fileTree();
 
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: thisUrl,
+                ajax: "{{ url('document-manager') }}",
                 columns: [
+                    @if(in_array($read||$update||$delete, $permArray))
                     {data: 'docCode', name: 'docCode'},
                     {data: 'docRev', name: 'docRev'},
                     {data: 'docName', name: 'docName'},
                     {data: 'docExt', name: 'docExt'},
                     {data: 'action', name: 'action'},
+                    @else
+                    {data: 'docCode', name: 'docCode'},
+                    {data: 'docRev', name: 'docRev'},
+                    {data: 'docName', name: 'docName'},
+                    {data: 'docExt', name: 'docExt'},
+                    @endif
                 ]
             });
 
+            @if($newfolder)
+            //Create New Folder
+            $(document).on('submit','#new-folder',function (newfolder) {
+                newfolder.preventDefault();
+                var fpath = document.getElementById("froute").value;
+                var fname = document.getElementById("foldername").value;
 
+                $.ajax({
+                    url: "{{ route('new-folder') }}",
+                    method: 'POST',
+                    data: {
+                        fpath: fpath,
+                        fname: fname,
+                        _token: '{{ csrf_token() }}',
+                    },
+                    success: function (data)
+                    {
+                        $('#welcome-msg').removeAttr("style");
+                        $('#table-id').attr("style", "display:none");
+
+                        fileTree();
+                    },
+                    error: function (data)
+                    {
+                        //
+                    }
+                });
+
+                $("#add-folder").modal('hide');
+            });
+            @endif
+
+            @if($deletefolder)
+            //Delete Folder
+            $(document).on('click','#delete-folder',function (deletefolder) {
+                deletefolder.preventDefault();
+
+
+                $.ajax({
+                    url: "{{ url("/store/path/") }}",
+                    type: 'POST',
+                    data: {
+                        path: 'documents/',
+                        _token: '{{ csrf_token() }}',
+                    },
+                    success: function(data){
+                        // console.log(path);
+                        table.ajax.reload();
+                        // $('input[type=search]').val('');
+                    }
+                })
+
+                $.ajax({
+                    url: "{{ route('delete-folder') }}",
+                    method: 'POST',
+                    data: {
+                        "fpath": document.getElementById("froute").value,
+                        "_token": "{{ csrf_token() }}",
+                    },
+                    success: function (data)
+                    {
+                        $('#welcome-msg').removeAttr("style");
+                        $('#table-id').attr("style", "display:none");
+
+                        fileTree();
+                    },
+                    error: function (data)
+                    {
+                        //
+                    }
+                });
+
+                $("#add-folder").modal('hide');
+            });
+            @endif
+
+            @if($create)
             // Add File or Document
-            $(document).on('submit','#add-file',function (e) {
-                e.preventDefault();
+            $(document).on('submit','#add-file',function (addfile) {
+                addfile.preventDefault();
 
                 $.ajax({
                     url: "{{ route('upload') }}",
@@ -268,7 +367,9 @@
 
                 $("#add-new-document").modal('hide');
             });
+            @endif
 
+            @if($delete)
             // Delete File or Document
             $('body').on('click', '#delete-data', function () {
                 var item_path = $(this).data('path');
@@ -305,60 +406,14 @@
                 })
 
             });
+            @endif
 
-
-            //Create New Folder
-            $(document).on('submit','#new-folder',function (e) {
-                e.preventDefault();
-
-                $.ajax({
-                    url: "{{ route('new-folder') }}",
-                    method: 'POST',
-                    data: {
-                        "fpath": document.getElementById("froute").value,
-                        "fname": document.getElementById("foldername").value,
-                        "_token": "{{ csrf_token() }}",
-                    },
-                    success: function (data)
-                    {
-                        $.get('{{route('file-tree')}}', function (data) {
-                            $('.file-tree').html(data).filetree();
-                        });
-                    },
-                    error: function (data)
-                    {
-                        //
-                    }
-                });
-
-                $("#add-folder").modal('hide');
+            @if($read)
+            //View Documents
+            $('body').on('click', '#view-doc', function () {
+                $('#return-view').attr('src', $(this).data('src'));
             });
-
-            //Delete Folder
-            $(document).on('click','#delete-folder',function (e) {
-                e.preventDefault();
-
-                $.ajax({
-                    url: "{{ route('delete-folder') }}",
-                    method: 'POST',
-                    data: {
-                        "fpath": document.getElementById("froute").value,
-                        "_token": "{{ csrf_token() }}",
-                    },
-                    success: function (data)
-                    {
-                        $.get('{{route('file-tree')}}', function (data) {
-                            $('.file-tree').html(data).filetree();
-                        });
-                    },
-                    error: function (data)
-                    {
-                        //
-                    }
-                });
-
-                $("#add-folder").modal('hide');
-            });
+            @endif
         });
 
     </script>

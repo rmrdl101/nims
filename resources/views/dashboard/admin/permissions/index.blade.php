@@ -27,7 +27,8 @@
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">{{ $leaves }} List</h3>
-                    @if ($create) // check if this allowed to create
+                    @if ($create)
+                    <!-- check if this allowed to create -->
                     <div class="box-tools">
                         <a id="new-data" data-toggle="modal" class="btn btn-info">Add Permission</a>
                     </div>
@@ -267,9 +268,8 @@
                     title: "Are you sure you want to DELETE this permission?",
                     icon: 'warning',
                     showDenyButton: true,
-                    showCancelButton: true,
-                    confirmButtonText: `Yes`,
-                    denyButtonText: `No`,
+                    confirmButtonText: `DELETE`,
+                    denyButtonText: `NO`,
                     customClass: {
                         cancelButton: 'order-1 right-gap',
                         confirmButton: 'order-2',

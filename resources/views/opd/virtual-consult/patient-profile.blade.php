@@ -12,25 +12,28 @@
                 <!-- Profile Image -->
                 <div class="box box-primary">
                     <div class="box-body box-profile">
-                        <img class="profile-user-img img-responsive img-circle" src="https://ui-avatars.com/api/?name={{ Auth::user()->fname }}+{{ Auth::user()->lname }}" alt="User profile picture">
+                        <img class="profile-user-img img-responsive img-circle" src="https://ui-avatars.com/api/?name={{ $ppatient->fname }}+{{ $ppatient->lname }}" alt="User profile picture">
 
-                        <h3 class="profile-username text-center">{{ Auth::user()->fname }} {{ substr(Auth::user()->mname, 0, 1) }}. {{ Auth::user()->lname }}</h3>
+                        <h3 class="profile-username text-center">{{ $ppatient->fname }} {{ substr($ppatient->mname, 0, 1) }}. {{ $ppatient->lname }}</h3>
 
-                        <p class="text-muted text-center" style="font-size: small">{{ Auth::user()->designation }} | {{ Auth::user()->departments->first()->name }}</p>
+                        {{--<p class="text-muted text-center" style="font-size: small"></p>--}}
 
-                        {{--<ul class="list-group list-group-unbordered">--}}
-                            {{--<li class="list-group-item">--}}
-                                {{--<b>Followers</b> <a class="pull-right">1,322</a>--}}
-                            {{--</li>--}}
-                            {{--<li class="list-group-item">--}}
-                                {{--<b>Following</b> <a class="pull-right">543</a>--}}
-                            {{--</li>--}}
-                            {{--<li class="list-group-item">--}}
-                                {{--<b>Friends</b> <a class="pull-right">13,287</a>--}}
-                            {{--</li>--}}
-                        {{--</ul>--}}
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item">
+                                <b>Age</b> <a class="pull-right">{{ $ppatient->age }}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Sex</b> <a class="pull-right">{{ $ppatient->sex }}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Birthday</b> <a class="pull-right">{{ date('M d, Y', strtotime($ppatient->birthday)) }}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Contact Info</b> <a class="pull-right">{{ $ppatient->contactnum }}</a>
+                            </li>
+                        </ul>
 
-                        {{--<a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>--}}
+                        <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -43,37 +46,16 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <strong><i class="fa fa-book margin-r-5"></i>Birthday</strong>
+                        <strong><i class="fa fa-book margin-r-5"></i>Chief Complaint</strong>
 
                         <p class="text-muted">
-                            {{ Auth::user()->birthday }}
+                            {{ $ppatient->chiefcomplaint }}
                         </p>
 
                         <hr>
-                        @if(!Auth::user()->licnum)
-                        @else
-                            <strong><i class="fa fa-map-marker margin-r-5"></i> License Number</strong>
+                        <strong><i class="fa fa-file-text-o margin-r-5"></i> Remarks</strong>
 
-                            <p class="text-muted">{{ Auth::user()->licnum }}</p>
-
-                            <hr>
-                        @endif
-
-                        {{--<strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>--}}
-
-                        {{--<p>--}}
-                            {{--<span class="label label-danger">UI Design</span>--}}
-                            {{--<span class="label label-success">Coding</span>--}}
-                            {{--<span class="label label-info">Javascript</span>--}}
-                            {{--<span class="label label-warning">PHP</span>--}}
-                            {{--<span class="label label-primary">Node.js</span>--}}
-                        {{--</p>--}}
-
-                        {{--<hr>--}}
-
-                        <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                        <p>{{ $ppatient->remarks }}</p>
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -83,37 +65,17 @@
             <div class="col-md-9">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#activity" data-toggle="tab">Activity</a></li>
-
-                        @if(Auth::user()->hasPosition('admin'))
                         <li><a href="#timeline" data-toggle="tab">Timeline</a></li>
                         <li><a href="#settings" data-toggle="tab">Settings</a></li>
-                        @endif
                     </ul>
                     <div class="tab-content">
-                        <div class="active tab-pane" id="activity">
-                            <!-- Post -->
-                            <div class="post">
-                                <div class="fb-post" data-href="https://www.facebook.com/TDHNursingService/posts/1007348243406363" data-width="auto" data-show-text="true"><blockquote cite="https://www.facebook.com/TDHNursingService/posts/1007348243406363" class="fb-xfbml-parse-ignore"><p>June 10-11, 2021 - a very productive session for our Admin and other NSD Personnel as they embarked on an interactive...</p>Posted by <a href="https://www.facebook.com/TDHNursingService/">Cebu South Medical Center Nursing Service</a> on&nbsp;<a href="https://www.facebook.com/TDHNursingService/posts/1007348243406363">Sunday, June 13, 2021</a></blockquote></div>
-                            </div>
-                            <!-- /.post -->
-
-                            <!-- Post -->
-                            <div class="post clearfix">
-                                <div class="fb-post" data-href="https://www.facebook.com/TDHNursingService/posts/1004755066999014" data-width="auto" data-show-text="true"><blockquote cite="https://www.facebook.com/TDHNursingService/posts/1004755066999014" class="fb-xfbml-parse-ignore"><p>June 9, 2021 - CSMC Nursing Service was invited to share best practices on the division’s COVID-19 Response in a collaborative activity with the Western Visayas Sanitarium Nursing Service Division.</p>Posted by <a href="https://www.facebook.com/TDHNursingService/">Cebu South Medical Center Nursing Service</a> on&nbsp;<a href="https://www.facebook.com/TDHNursingService/posts/1004755066999014">Wednesday, June 9, 2021</a></blockquote></div>
-                            </div>
-                            <!-- /.post -->
-                        </div>
-                        <!-- /.tab-pane -->
-
-                        @if(Auth::user()->hasPosition('admin'))
-                        <div class="tab-pane" id="timeline">
+                        <div class="active tab-pane" id="timeline">
                             <!-- The timeline -->
                             <ul class="timeline timeline-inverse">
                                 <!-- timeline time label -->
                                 <li class="time-label">
                         <span class="bg-red">
-                          10 Feb. 2014
+                          {{ $ppatient->created_at }}
                         </span>
                                 </li>
                                 <!-- /.timeline-label -->
@@ -257,7 +219,6 @@
                             </form>
                         </div>
                         <!-- /.tab-pane -->
-                            @endif
                     </div>
                     <!-- /.tab-content -->
                 </div>
